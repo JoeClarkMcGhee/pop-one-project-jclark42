@@ -1,5 +1,5 @@
 import pytest
-from . import cities
+import cities
 
 
 def test_compute_total_distance():
