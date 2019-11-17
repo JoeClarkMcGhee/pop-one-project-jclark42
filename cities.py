@@ -12,6 +12,7 @@ def read_cities(file_name):
     pass
 
 
+
 def print_cities(road_map):
     """
     Prints a list of cities, along with their locations. 
