@@ -1,3 +1,6 @@
+from typing import List, Tuple
+
+
 def read_cities(file_name):
     """
     Read in the cities from the given `file_name`, and return
@@ -20,12 +23,13 @@ def print_cities(road_map):
     pass
 
 
-def compute_total_distance(road_map):
+def compute_total_distance(road_map: List[Tuple[str, str, float, float]]) -> float:
     """
     Returns, as a floating point number, the sum of the distances of all
     the connections in the `road_map`. Remember that it's a cycle, so that
     (for example) in the initial `road_map`, Wyoming connects to Alabama...
     """
+    return 1.0
 
 
 def swap_cities(road_map, index1, index2):
