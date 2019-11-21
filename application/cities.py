@@ -1,6 +1,5 @@
 from typing import List, Tuple
 
-
 RoadMap = List[Tuple[str, str, float, float]]
 
 
