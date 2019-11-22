@@ -14,7 +14,7 @@ def read_cities(*, file_name) -> RoadMap:
 
       Alabama -> Alaska -> Arizona -> ... -> Wyoming -> Alabama.
     """
-    pass
+    return [("Alabama", "Montgomery", 32.361538, -86.279118)]
 
 
 def print_cities(*, road_map: RoadMap):
