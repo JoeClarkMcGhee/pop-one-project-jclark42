@@ -41,10 +41,10 @@ def test_not_valid_file_type_fails():
     with an extension other than '.csv'
     """
     test_file = "fixtures/test_bad_extension_city_data.tsv"
-    assert app_helpers.is_valid_file_type(file=test_file) == app_helpers.InvalidFileException
+    with pytest.raises(app_helpers.InvalidFileException):
+        app_helpers.is_valid_file_type(file=test_file)
 
 
-@pytest.mark.xfail(reason="Not yet implemented", run=False)
 def test_valid_file_type_passes():
     test_file = "fixtures/test_city_data.txt"
     assert app_helpers.is_valid_file_type(file=test_file)

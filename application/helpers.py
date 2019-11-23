@@ -12,6 +12,10 @@ def is_valid_file_line(*, file_line: str) -> bool:
 
 
 def is_valid_file_type(*, file) -> bool:
+    path = pathlib.Path(file)
+    file_extension = path.suffix
+    if not file_extension == ".txt":
+        raise InvalidFileException(f"{file} is not a .txt file")
     return True
 
 
@@ -31,4 +35,3 @@ def is_valid_path_and_file_is_readable(*, file) -> bool:
     # If we have not raised an exception by this stage we can be confident that the file exists
     # and we can read from it.
     return True
-
