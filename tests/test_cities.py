@@ -5,7 +5,7 @@ from application import helpers as app_helpers
 from tests import helpers as test_helpers
 
 
-def test_read_cities():
+def test_read_cities_passes():
     """
     Test read_cities reads in a text file and returns a road map.
     """
@@ -16,6 +16,15 @@ def test_read_cities():
         ("Arizona", "Phoenix", 33.448457, -112.073844),
     ]
     assert cities.read_cities(file_name=test_file) == expected_road_map
+
+
+def test_read_cities_fails():
+    """
+    Test read_cities returns InvalidFileException when it reads in a bad file.
+    """
+    bad_file = "fixtures/test_bad_city_data.txt"
+    with pytest.raises(app_helpers.InvalidFileException):
+        cities.read_cities(file_name=bad_file)
 
 
 @pytest.mark.parametrize(
