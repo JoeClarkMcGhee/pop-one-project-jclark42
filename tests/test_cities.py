@@ -56,7 +56,6 @@ def test_is_not_valid_path_and_file_is_not_readable():
         app_helpers.is_valid_path_and_file_is_readable(file=bad_file_path)
 
 
-@pytest.mark.xfail(reason="Not yet implemented", run=False)
 def test_is_valid_path_and_file_is_readable():
     test_file = "fixtures/test_city_data.txt"
     assert app_helpers.is_valid_path_and_file_is_readable(file=test_file)
