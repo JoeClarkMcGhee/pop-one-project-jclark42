@@ -1,4 +1,7 @@
+import pathlib
 from typing import List, Tuple
+
+from . import helpers
 
 RoadMap = List[Tuple[str, str, float, float]]
 
@@ -6,15 +9,57 @@ RoadMap = List[Tuple[str, str, float, float]]
 def read_cities(*, file_name) -> RoadMap:
     """
     Read in the cities from the given `file_name`, and return
-    them as a list of four-tuples:
+    them as a list of four-tuples.
 
-      [(state, city, latitude, longitude), ...]
+    :param file_name: file path of city data.
+    :returns RoadMap -> [(state, city, latitude, longitude), ...]
 
-    Use this as your initial `road_map`, that is, the cycle
-
-      Alabama -> Alaska -> Arizona -> ... -> Wyoming -> Alabama.
     """
-    pass
+    # Test valid file.
+    try:
+        is_valid_file(file_name=file_name)
+    except Exception as e:
+        raise Exception(f"The program received bad file input: {e}")
+
+    # Test valid file line and parse lines.
+    road_map = build_file_lines(file_name=file_name)
+
+    # A road map needs to have a length of at least 2.
+    if len(road_map) < 2:
+        raise helpers.InvalidFileException()
+
+    return road_map
+
+
+def build_file_lines(*, file_name) -> RoadMap:
+    """
+    Builds a road map from the passed in file.
+
+    :param file_name: file path of city data.
+    :returns RoadMap -> [(state, city, latitude, longitude), ...]
+    """
+    road_map = list()
+    line_idx = None
+    try:
+        path = pathlib.Path(file_name)
+        lines = path.read_text().splitlines()
+        for idx, line in enumerate(lines):
+            line_idx = idx
+            road_map.append(helpers.parse_file_line(file_line=line))
+    except (Exception, helpers.InvalidFileException) as e:
+        raise helpers.InvalidFileException(f"Not able to parse file line {line_idx}: {e}")
+    return road_map
+
+
+def is_valid_file(*, file_name):
+    """
+    Check if the passed in file is valid. We check the following:
+        - Does the file exist and we can open it
+        - Is the file a valid extension for this application (.txt)
+    :param file_name: File to be validated
+    """
+    helpers.is_valid_path_and_file_is_readable(file=file_name)
+    helpers.is_valid_file_type(file=file_name)
 
 
 def print_cities(*, road_map: RoadMap):
