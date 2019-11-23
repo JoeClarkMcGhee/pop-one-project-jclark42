@@ -19,20 +19,26 @@ def test_read_cities():
 
 
 @pytest.mark.parametrize(
-    "file_line, result",
+    "file_line",
     [
-        pytest.param("1, 2, 3, 4", app_helpers.InvalidFileException),
-        pytest.param("Alabama	Montgomery	32.361538	", app_helpers.InvalidFileException),
-        pytest.param("Alabama	32.361538	Montgomery	-86.27", app_helpers.InvalidFileException),
-        pytest.param("32.361538 Alabama	Montgomery	32.361538", app_helpers.InvalidFileException),
-        pytest.param("Alabama	Montgomery	32.361538	-86.279118", True),
+        pytest.param("1, 2, 3, 4"),
+        pytest.param("Alabama	Montgomery	32.361538	"),
+        pytest.param("Alabama	32.361538	Montgomery	-86.27"),
+        pytest.param("32.361538 Alabama	Montgomery	32.361538"),
     ],
 )
-def test_is_valid_file_line(file_line, result):
+def test_is_not_valid_file_line(file_line):
     """
     Tests that a file input line is a valid sting i.e. one that the application is able to parse.
     """
-    assert app_helpers.is_valid_file_line(file_line=file_line) == result
+    with pytest.raises(app_helpers.InvalidFileException):
+        app_helpers.parse_file_line(file_line=file_line)
+
+
+def test_is_valid_file_line():
+    file_line = "Alabama	Montgomery	32.361538	-86.279118"
+    expected_file_line = ("Alabama", "Montgomery", 32.361538, -86.279118)
+    assert app_helpers.parse_file_line(file_line=file_line) == expected_file_line
 
 
 def test_not_valid_file_type_fails():

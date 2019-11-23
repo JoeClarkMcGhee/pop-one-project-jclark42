@@ -1,4 +1,5 @@
 import pathlib
+from typing import Tuple
 
 
 class InvalidFileException(Exception):
@@ -7,8 +8,25 @@ class InvalidFileException(Exception):
     """
 
 
-def is_valid_file_line(*, file_line: str) -> bool:
-    return True
+Location = Tuple[str, str, float, float]
+
+
+def parse_file_line(*, file_line: str) -> Location:
+    try:
+        state, city, latitude, longitude = file_line.split()
+    except Exception as e:
+        raise InvalidFileException(f"file line must read state, city, latitude, longitude: {e}")
+
+    file_line = [state, city]
+    try:
+        latitude = float(latitude)
+        longitude = float(longitude)
+    except ValueError:
+        raise InvalidFileException("latitude/longitude can't be parsed to a float")
+    else:
+        file_line.append(latitude)
+        file_line.append(longitude)
+        return tuple(file_line)
 
 
 def is_valid_file_type(*, file) -> bool:
