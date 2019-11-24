@@ -1,3 +1,6 @@
+import textwrap
+
+
 def initialise_test_case(index):
     road_map1 = [
         [
@@ -104,3 +107,12 @@ def shift_city_result(index):
         ],
     ]
     return road_map1[index]
+
+
+def format_string(input_string):
+    """
+    Return a string with normalized whitespace.
+    This function is meant to be used where `input_string` is a triple-quoted
+    string embedded in a test.
+    """
+    return textwrap.dedent(input_string).lstrip()
