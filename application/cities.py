@@ -65,9 +65,12 @@ def is_valid_file(*, file_name):
 def print_cities(*, road_map: RoadMap):
     """
     Prints a list of cities, along with their locations.
-    Print only one or two digits after the decimal point.
+    :param road_map: RoadMap -> [(state, city, latitude, longitude), ...]
     """
-    pass
+    road_map_to_print = ""
+    for _, city, lat, long in road_map:
+        road_map_to_print += f"city: {city} location: {round(lat, 2)}, {round(long, 2)}\n"
+    print(road_map_to_print.rstrip())
 
 
 def compute_total_distance(*, road_map: RoadMap) -> float:
