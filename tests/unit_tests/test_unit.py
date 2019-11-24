@@ -1,7 +1,9 @@
 import pytest
 import os
 
+from application import cities
 from application import helpers as app_helpers
+from .. import helpers
 
 
 @pytest.mark.parametrize(
@@ -52,3 +54,19 @@ def test_is_valid_path_and_file_is_readable():
     this_dir = os.path.dirname(os.path.abspath(__file__))
     test_file = os.path.join(this_dir, os.pardir, "fixtures/test_city_data.txt")
     assert app_helpers.is_valid_path_and_file_is_readable(file=test_file)
+
+
+def test_print_cities(capsys):
+    road_map = [
+        ("Alabama", "Montgomery", 32.361538, -86.279118),
+        ("Alaska", "Juneau", 58.301935, -134.41974),
+        ("Arizona", "Phoenix", 33.448457, -112.073844),
+    ]
+    expected_string = f"""
+    city: Montgomery location: {round(32.361538, 2)}, {round(-86.279118, 2)}
+    city: Juneau location: {round(58.301935, 2)}, {round(-134.41974, 2)}
+    city: Phoenix location: {round(33.448457, 2)}, {round(-112.073844, 2)}
+    """
+    cities.print_cities(road_map=road_map)
+    captured = capsys.readouterr()
+    assert captured.out == helpers.format_string(expected_string)
