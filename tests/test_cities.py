@@ -35,11 +35,11 @@ def test_read_cities_fails():
 @pytest.mark.parametrize(
     "road_map, result",
     [
-        pytest.param(test_helpers.initialise_test_case(0), 38.528),
-        pytest.param(test_helpers.initialise_test_case(1), 38.528),
-        pytest.param(test_helpers.initialise_test_case(2), 38.528),
-        pytest.param(test_helpers.initialise_test_case(3), 38.528),
-        pytest.param(test_helpers.initialise_test_case(4), 38.528),
+        pytest.param(test_helpers.initialise_test_road_map(0), 38.528),
+        pytest.param(test_helpers.initialise_test_road_map(1), 38.528),
+        pytest.param(test_helpers.initialise_test_road_map(2), 38.528),
+        pytest.param(test_helpers.initialise_test_road_map(3), 38.528),
+        pytest.param(test_helpers.initialise_test_road_map(4), 38.528),
     ],
 )
 def test_compute_total_distance(road_map, result):
@@ -56,11 +56,21 @@ def test_compute_total_distance(road_map, result):
 @pytest.mark.parametrize(
     "road_map, index_1, index_2, result",
     [
-        pytest.param(test_helpers.initialise_test_case(0), 0, 1, test_helpers.swap_city_result(0)),
-        pytest.param(test_helpers.initialise_test_case(1), 1, 2, test_helpers.swap_city_result(1)),
-        pytest.param(test_helpers.initialise_test_case(2), 2, 0, test_helpers.swap_city_result(2)),
-        pytest.param(test_helpers.initialise_test_case(3), 0, 1, test_helpers.swap_city_result(3)),
-        pytest.param(test_helpers.initialise_test_case(4), 0, 2, test_helpers.swap_city_result(4)),
+        pytest.param(
+            test_helpers.initialise_test_road_map(0), 0, 1, test_helpers.swap_city_result(0)
+        ),
+        pytest.param(
+            test_helpers.initialise_test_road_map(1), 1, 2, test_helpers.swap_city_result(1)
+        ),
+        pytest.param(
+            test_helpers.initialise_test_road_map(2), 2, 0, test_helpers.swap_city_result(2)
+        ),
+        pytest.param(
+            test_helpers.initialise_test_road_map(3), 0, 1, test_helpers.swap_city_result(3)
+        ),
+        pytest.param(
+            test_helpers.initialise_test_road_map(4), 0, 2, test_helpers.swap_city_result(4)
+        ),
     ],
 )
 def test_swap_cities(road_map, index_1, index_2, result):
@@ -78,11 +88,11 @@ def test_swap_cities(road_map, index_1, index_2, result):
 @pytest.mark.parametrize(
     "road_map, shifted_road_map",
     [
-        pytest.param(test_helpers.initialise_test_case(0), test_helpers.shift_city_result(0)),
-        pytest.param(test_helpers.initialise_test_case(0), test_helpers.shift_city_result(1)),
-        pytest.param(test_helpers.initialise_test_case(0), test_helpers.shift_city_result(2)),
-        pytest.param(test_helpers.initialise_test_case(0), test_helpers.shift_city_result(3)),
-        pytest.param(test_helpers.initialise_test_case(0), test_helpers.shift_city_result(4)),
+        pytest.param(test_helpers.initialise_test_road_map(0), test_helpers.shift_city_result(0)),
+        pytest.param(test_helpers.initialise_test_road_map(1), test_helpers.shift_city_result(1)),
+        pytest.param(test_helpers.initialise_test_road_map(2), test_helpers.shift_city_result(2)),
+        pytest.param(test_helpers.initialise_test_road_map(3), test_helpers.shift_city_result(3)),
+        pytest.param(test_helpers.initialise_test_road_map(4), test_helpers.shift_city_result(4)),
     ],
 )
 def test_shift_cities(road_map, shifted_road_map):
