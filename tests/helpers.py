@@ -1,7 +1,7 @@
 import textwrap
 
 
-def initialise_test_case(index):
+def initialise_test_road_map(index):
     road_map1 = [
         [
             ("Kentucky", "Frankfort", 38.197274, -84.86311),
@@ -9,24 +9,24 @@ def initialise_test_case(index):
             ("Minnesota", "Saint Paul", 44.95, -93.094),
         ],
         [
-            ("Kentucky", "Frankfort", 38.197274, -84.86311),
-            ("Delaware", "Dover", 39.161921, -75.526755),
-            ("Minnesota", "Saint Paul", 44.95, -93.094),
+            ("Foo", "Bar", 38.197274, -84.86311),
+            ("Bing", "Bong", 39.161921, -75.526755),
+            ("Boo", "Baz", 44.95, -93.094),
         ],
         [
-            ("Kentucky", "Frankfort", 38.197274, -84.86311),
-            ("Delaware", "Dover", 39.161921, -75.526755),
-            ("Minnesota", "Saint Paul", 44.95, -93.094),
+            ("Bill", "Ted", 38.197274, -84.86311),
+            ("Freddy", "Krueger", 39.161921, -75.526755),
+            ("Bilbo", "Baggins", 44.95, -93.094),
         ],
         [
-            ("Kentucky", "Frankfort", 38.197274, -84.86311),
-            ("Delaware", "Dover", 39.161921, -75.526755),
-            ("Minnesota", "Saint Paul", 44.95, -93.094),
+            ("Bat", "Man", 38.197274, -84.86311),
+            ("The", "Joker", 39.161921, -75.526755),
+            ("Two", "Face", 44.95, -93.094),
         ],
         [
-            ("Kentucky", "Frankfort", 38.197274, -84.86311),
-            ("Delaware", "Dover", 39.161921, -75.526755),
-            ("Minnesota", "Saint Paul", 44.95, -93.094),
+            ("Spider", "Man", 38.197274, -84.86311),
+            ("Green", "Goblin", 39.161921, -75.526755),
+            ("Ant", "Man", 44.95, -93.094),
         ],
     ]
     return road_map1[index]
@@ -86,24 +86,24 @@ def shift_city_result(index):
             ("Delaware", "Dover", 39.161921, -75.526755),
         ],
         [
-            ("Minnesota", "Saint Paul", 44.95, -93.094),
-            ("Kentucky", "Frankfort", 38.197274, -84.86311),
-            ("Delaware", "Dover", 39.161921, -75.526755),
+            ("Boo", "Baz", 44.95, -93.094),
+            ("Foo", "Bar", 38.197274, -84.86311),
+            ("Bing", "Bong", 39.161921, -75.526755),
         ],
         [
-            ("Kentucky", "Frankfort", 38.197274, -84.86311),
-            ("Delaware", "Dover", 39.161921, -75.526755),
-            ("Minnesota", "Saint Paul", 44.95, -93.094),
+            ("Bilbo", "Baggins", 44.95, -93.094),
+            ("Bill", "Ted", 38.197274, -84.86311),
+            ("Freddy", "Krueger", 39.161921, -75.526755),
         ],
         [
-            ("Kentucky", "Frankfort", 38.197274, -84.86311),
-            ("Delaware", "Dover", 39.161921, -75.526755),
-            ("Minnesota", "Saint Paul", 44.95, -93.094),
+            ("Two", "Face", 44.95, -93.094),
+            ("Bat", "Man", 38.197274, -84.86311),
+            ("The", "Joker", 39.161921, -75.526755),
         ],
         [
-            ("Kentucky", "Frankfort", 38.197274, -84.86311),
-            ("Delaware", "Dover", 39.161921, -75.526755),
-            ("Minnesota", "Saint Paul", 44.95, -93.094),
+            ("Ant", "Man", 44.95, -93.094),
+            ("Spider", "Man", 38.197274, -84.86311),
+            ("Green", "Goblin", 39.161921, -75.526755),
         ],
     ]
     return road_map1[index]
