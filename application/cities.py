@@ -102,10 +102,12 @@ def shift_cities(*, road_map: RoadMap) -> RoadMap:
     """
     For every index i in the `road_map`, the city at the position i moves
     to the position i+1. The city at the last position moves to the position
-    0. Return the new road map.
+    0.
+    :param road_map: RoadMap -> [(state, city, latitude, longitude), ...]
     """
-    new_road_map = [("foo", "bar", 1, 2), ("bing", "bong", 3, 4)]
-    return new_road_map
+    last_city = road_map.pop()
+    road_map.insert(0, last_city)
+    return road_map
 
 
 def find_best_cycle(*, road_map: RoadMap) -> RoadMap:
