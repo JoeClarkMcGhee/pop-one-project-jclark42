@@ -80,7 +80,28 @@ def compute_total_distance(*, road_map: RoadMap) -> float:
     first.
     :param road_map: RoadMap -> [(state, city, latitude, longitude), ...]
     """
-    return 1.0
+    total_distance = 0
+    index_a = 0
+    index_b = 1
+    connections = len(road_map)
+    while connections:
+        _, _, city_a_lat, city_a_long = road_map[index_a]
+        try:
+            _, _, city_b_lat, city_b_long = road_map[index_b]
+        except IndexError:
+            #  Wait for the end of the list the
+            _, _, city_b_lat, city_b_long = road_map[0]
+        total_distance += helpers.compute_euclidean_distance(
+            city_a_lat=city_a_lat,
+            city_a_long=city_a_long,
+            city_b_lat=city_b_lat,
+            city_b_long=city_b_long,
+        )
+        index_a += 1
+        index_b += 1
+        connections -= 1
+
+    return total_distance
 
 
 def swap_cities(*, road_map: RoadMap, index_1: int, index_2: int) -> Tuple[RoadMap, float]:

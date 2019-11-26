@@ -1,3 +1,4 @@
+import math
 import pathlib
 from typing import Tuple
 
@@ -58,4 +59,4 @@ def is_valid_path_and_file_is_readable(*, file) -> bool:
 def compute_euclidean_distance(
     *, city_a_lat: float, city_a_long: float, city_b_lat: float, city_b_long: float
 ) -> float:
-    return 0.01
+    return math.sqrt((city_a_lat - city_b_lat) ** 2 + (city_a_long - city_b_long) ** 2)
