@@ -42,39 +42,41 @@ def swap_city_result(index):
                 ("Delaware", "Dover", 39.161921, -75.526755),
                 ("Minnesota", "Saint Paul", 44.95, -93.094),
             ],
-            1.0,
+            38.528,
         ),
         (
             [
-                ("Kentucky", "Frankfort", 38.197274, -84.86311),
-                ("Delaware", "Dover", 39.161921, -75.526755),
-                ("Minnesota", "Saint Paul", 44.95, -93.094),
+                ("Foo", "Bar", 38.197274, -84.86311),
+                ("Boo", "Baz", 42.95, -99.094),
+                ("Bing", "Bong", 36.161921, -78.526755),
             ],
-            1.0,
+            43.313,
         ),
         (
             [
-                ("Kentucky", "Frankfort", 38.197274, -84.86311),
-                ("Delaware", "Dover", 39.161921, -75.526755),
-                ("Minnesota", "Saint Paul", 44.95, -93.094),
+                ("Bilbo", "Baggins", 54.95, -33.094),
+                ("Freddy", "Krueger", 49.161921, -79.526755),
+                ("Bill", "Ted", 38.197274, -84.86311),
             ],
-            1.0,
+            113.398,
         ),
         (
             [
-                ("Kentucky", "Frankfort", 38.197274, -84.86311),
-                ("Delaware", "Dover", 39.161921, -75.526755),
-                ("Minnesota", "Saint Paul", 44.95, -93.094),
+                ("Bat", "Man", 38.197274, -84.86311),
+                ("Two", "Face", 74.95, -53.094),
+                ("The", "Joker", 19.161921, -45.526755),
             ],
-            1.0,
+            148.578,
         ),
         (
             [
-                ("Kentucky", "Frankfort", 38.197274, -84.86311),
-                ("Delaware", "Dover", 39.161921, -75.526755),
-                ("Minnesota", "Saint Paul", 44.95, -93.094),
+                ("Spider", "Man", 38.197274, -84.86311),
+                ("Flash", "Gordon", 49.95, -13.094),
+                ("Ant", "Man", 44.95, -13.094),
+                ("Green", "Goblin", 31.161921, -85.526755),
+                ("Super", "Man", 67.95, -13.094),
             ],
-            1.0,
+            310.388,
         ),
     ]
     return road_map1[index]
