@@ -75,9 +75,10 @@ def print_cities(*, road_map: RoadMap):
 
 def compute_total_distance(*, road_map: RoadMap) -> float:
     """
-    Returns, as a floating point number, the sum of the distances of all
-    the connections in the `road_map`. Remember that it's a cycle, so that
-    (for example) in the initial `road_map`, Wyoming connects to Alabama...
+    Returns, as a floating point number, the sum of the distances of all the connections in the
+    `road_map`. The distance is calculated as a full cycle i.e. the last city connects to the
+    first.
+    :param road_map: RoadMap -> [(state, city, latitude, longitude), ...]
     """
     return 1.0
 

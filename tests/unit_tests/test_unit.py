@@ -70,3 +70,25 @@ def test_print_cities(capsys):
     cities.print_cities(road_map=road_map)
     captured = capsys.readouterr()
     assert captured.out == helpers.format_string(expected_string)
+
+
+@pytest.mark.parametrize(
+    "city_locations_and_distance", [
+        pytest.param(helpers.cities_and_distance(0)),
+        pytest.param(helpers.cities_and_distance(1)),
+        pytest.param(helpers.cities_and_distance(2)),
+        pytest.param(helpers.cities_and_distance(3)),
+        pytest.param(helpers.cities_and_distance(4)),
+    ]
+)
+def test_compute_distance_between_two_cities(city_locations_and_distance):
+    city_a_lat, city_a_long, city_b_lat, city_b_long, result = city_locations_and_distance
+    assert (
+        app_helpers.compute_euclidean_distance(
+            city_a_lat=city_a_lat,
+            city_a_long=city_a_long,
+            city_b_lat=city_b_lat,
+            city_b_long=city_b_long,
+        )
+        == pytest.approx(result, 0.01)
+    )
