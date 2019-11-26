@@ -1,3 +1,4 @@
+import math
 import pathlib
 from typing import Tuple
 
@@ -53,3 +54,9 @@ def is_valid_path_and_file_is_readable(*, file) -> bool:
     # If we have not raised an exception by this stage we can be confident that the file exists
     # and we can read from it.
     return True
+
+
+def compute_euclidean_distance(
+    *, city_a_lat: float, city_a_long: float, city_b_lat: float, city_b_long: float
+) -> float:
+    return math.sqrt((city_a_lat - city_b_lat) ** 2 + (city_a_long - city_b_long) ** 2)

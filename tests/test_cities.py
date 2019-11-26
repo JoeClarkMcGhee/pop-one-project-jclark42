@@ -36,10 +36,10 @@ def test_read_cities_fails():
     "road_map, result",
     [
         pytest.param(test_helpers.initialise_test_road_map(0), 38.528),
-        pytest.param(test_helpers.initialise_test_road_map(1), 38.528),
-        pytest.param(test_helpers.initialise_test_road_map(2), 38.528),
-        pytest.param(test_helpers.initialise_test_road_map(3), 38.528),
-        pytest.param(test_helpers.initialise_test_road_map(4), 38.528),
+        pytest.param(test_helpers.initialise_test_road_map(1), 43.316),
+        pytest.param(test_helpers.initialise_test_road_map(2), 113.398),
+        pytest.param(test_helpers.initialise_test_road_map(3), 148.578),
+        pytest.param(test_helpers.initialise_test_road_map(4), 181.49),
     ],
 )
 def test_compute_total_distance(road_map, result):
