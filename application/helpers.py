@@ -16,7 +16,6 @@ Location = Tuple[str, str, float, float]
 
 def parse_file_line(*, file_line: str, line_idx: int) -> Location:
     try:
-
         state, city, latitude, longitude = re.split(r"\t+", file_line)
     except ValueError as e:
         raise InvalidFileException(
