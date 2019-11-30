@@ -72,6 +72,23 @@ def test_print_cities(capsys):
     assert captured.out == helpers.format_string(expected_string)
 
 
+def test_print_map(capsys):
+    road_map = [
+        ("Alabama", "Montgomery", 32.361538, -86.279118),
+        ("Alaska", "Juneau", 58.301935, -134.41974),
+        ("Arizona", "Phoenix", 33.448457, -112.073844),
+    ]
+    expected_string = f"""
+    1. Montgomery -> Juneau: Distance {round(54.684766, 2)}
+    2. Juneau -> Phoenix: Distance {round(33.422065, 2)}
+    3. Phoenix -> Montgomery: Distance {round(25.817616, 2)}
+    Total distance: {round(113.919, 2)}
+    """
+    cities_interface.print_map(road_map=road_map)
+    captured_out = capsys.readouterr()
+    assert captured_out.out == helpers.format_string(expected_string)
+
+
 @pytest.mark.parametrize(
     "city_locations_and_distance",
     [
