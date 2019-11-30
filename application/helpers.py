@@ -1,5 +1,6 @@
 import math
 import pathlib
+from random import randrange
 from typing import Tuple
 
 
@@ -64,3 +65,7 @@ def compute_euclidean_distance(
     *, city_a_lat: float, city_a_long: float, city_b_lat: float, city_b_long: float
 ) -> float:
     return math.sqrt((city_a_lat - city_b_lat) ** 2 + (city_a_long - city_b_long) ** 2)
+
+
+def generate_random_int(*, max_random_number):
+    return randrange(0, max_random_number)

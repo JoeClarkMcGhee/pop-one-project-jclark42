@@ -2,6 +2,7 @@ import pathlib
 from typing import List, Tuple
 
 from . import helpers
+from .best_cycle_data_container import BestCycleContainer as Container
 
 RoadMap = List[Tuple[str, str, float, float]]
 
@@ -132,12 +133,29 @@ def shift_cities(*, road_map: RoadMap) -> RoadMap:
 
 def find_best_cycle(*, road_map: RoadMap) -> RoadMap:
     """
-    Using a combination of `swap_cities` and `shift_cities`,
-    try `10000` swaps/shifts, and each time keep the best cycle found so far.
-    After `10000` swaps/shifts, return the best cycle found so far.
-    Use randomly generated indices for swapping.
+    Using a combination of `swap_cities` and `shift_cities`, find the best cycle and return the
+    corresponding road map.
+    :param road_map: RoadMap -> [(state, city, latitude, longitude), ...]
     """
-    pass
+    road_map = road_map
+    road_map_length = len(road_map)
+    best_cycle = Container()
+    # Set best_cycle with values from the unoptimised road map.
+    best_cycle.set_distance_and_road_map(
+        road_map=best_cycle, distance=compute_total_distance(road_map=road_map)
+    )
+    for idx in range(10000):
+        # Shift the cities every 100 iterations.
+        if idx % 100 == 0:
+            road_map = shift_cities(road_map=road_map)
+        index_1 = helpers.generate_random_int(max_random_number=road_map_length)
+        index_2 = helpers.generate_random_int(max_random_number=road_map_length)
+        swapped_road_map, distance = swap_cities(
+            road_map=road_map, index_1=index_1, index_2=index_2
+        )
+        if best_cycle.should_update_best_distance(distance=distance):
+            best_cycle.set_distance_and_road_map(distance=distance, road_map=swapped_road_map)
+    return best_cycle.best_road_map
 
 
 def print_map(*, road_map: RoadMap):
