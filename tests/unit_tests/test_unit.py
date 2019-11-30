@@ -107,3 +107,33 @@ def test_compute_distance_between_two_cities(city_locations_and_distance):
         city_b_lat=city_b_lat,
         city_b_long=city_b_long,
     ) == pytest.approx(result, 0.01)
+
+
+@pytest.mark.parametrize(
+    "fine_line_sting, expected_result",
+    [
+        pytest.param(
+            "Utah	Phoenix	33.448457	-112.073844", ("Utah", "Phoenix", 33.448457, -112.073844)
+        ),
+        pytest.param(
+            "Nevada	Carson City	39.160949	-119.753877",
+            ("Nevada", "Carson City", 39.160949, -119.753877),
+        ),
+        pytest.param(
+            "New Hampshire	Concord	43.220093	-71.549127",
+            ("New Hampshire", "Concord", 43.220093, -71.549127),
+        ),
+        pytest.param(
+            "New Jersey	Trenton	40.221741	-74.756138",
+            ("New Jersey", "Trenton", 40.221741, -74.756138),
+        ),
+        pytest.param(
+            "New Mexico	Santa Fe	35.667231	-105.964575",
+            ("New Mexico", "Santa Fe", 35.667231, -105.964575),
+        ),
+    ],
+)
+def test_able_to_parse_file_lines_with_multi_word_states_and_cities(
+    fine_line_sting, expected_result
+):
+    assert app_helpers.parse_file_line(file_line=fine_line_sting, line_idx=1) == expected_result
