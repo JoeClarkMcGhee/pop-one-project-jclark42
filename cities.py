@@ -28,7 +28,10 @@ def main():
     print("---- Optimised road map ----")
     best_road_map = cities_interface.find_best_cycle(road_map=road_map)
     cities_interface.print_map(road_map=best_road_map)
-    visualize_road_map.visualise(road_map=best_road_map)
+    visualize_road_map.visualise(
+        road_map=best_road_map,
+        distance=cities_interface.compute_total_distance(road_map=best_road_map),
+    )
 
 
 if __name__ == "__main__":
