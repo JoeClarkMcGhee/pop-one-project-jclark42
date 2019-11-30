@@ -1,7 +1,7 @@
 import pytest
 import os
 
-from application import cities
+from application import cities_interface
 from application import helpers as app_helpers
 from .. import helpers
 
@@ -67,7 +67,7 @@ def test_print_cities(capsys):
     city: Juneau location: {round(58.301935, 2)}, {round(-134.41974, 2)}
     city: Phoenix location: {round(33.448457, 2)}, {round(-112.073844, 2)}
     """
-    cities.print_cities(road_map=road_map)
+    cities_interface.print_cities(road_map=road_map)
     captured = capsys.readouterr()
     assert captured.out == helpers.format_string(expected_string)
 

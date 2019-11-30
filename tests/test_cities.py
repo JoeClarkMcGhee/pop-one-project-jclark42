@@ -2,7 +2,7 @@ import os
 
 import pytest
 
-from application import cities
+from application import cities_interface
 from application import helpers as app_helpers
 from tests import helpers as test_helpers
 
@@ -20,7 +20,7 @@ def test_read_cities_passes():
         ("Alaska", "Juneau", 58.301935, -134.41974),
         ("Arizona", "Phoenix", 33.448457, -112.073844),
     ]
-    assert cities.read_cities(file_name=test_file) == expected_road_map
+    assert cities_interface.read_cities(file_name=test_file) == expected_road_map
 
 
 def test_read_cities_fails():
@@ -29,7 +29,7 @@ def test_read_cities_fails():
     """
     bad_file = os.path.join(DIR, "fixtures/test_bad_city_data.txt")
     with pytest.raises(app_helpers.InvalidFileException):
-        cities.read_cities(file_name=bad_file)
+        cities_interface.read_cities(file_name=bad_file)
 
 
 @pytest.mark.parametrize(
@@ -50,7 +50,9 @@ def test_compute_total_distance(road_map, result):
     :param result: A float of the sum distances of all the connections in the road_map i.e. the
     distance between the cities.
     """
-    assert cities.compute_total_distance(road_map=road_map) == pytest.approx(result, 0.01)
+    assert cities_interface.compute_total_distance(road_map=road_map) == pytest.approx(
+        result, 0.01
+    )
 
 
 @pytest.mark.parametrize(
@@ -83,7 +85,9 @@ def test_swap_cities(road_map, index_1, index_2, result):
     :param index_2: Integer to be used as an index on the road map.
     """
     mock_road_map, mock_distance = result
-    road_map, distance = cities.swap_cities(road_map=road_map, index_1=index_1, index_2=index_2)
+    road_map, distance = cities_interface.swap_cities(
+        road_map=road_map, index_1=index_1, index_2=index_2
+    )
     assert pytest.approx(mock_distance, 0.01) == distance
     assert mock_road_map == road_map
 
@@ -106,4 +110,4 @@ def test_shift_cities(road_map, shifted_road_map):
     :param road_map: A list of state, city, latitude, longitude tuples.
     :param shifted_road_map: A list of state, city, latitude, longitude tuples.
     """
-    assert cities.shift_cities(road_map=road_map) == shifted_road_map
+    assert cities_interface.shift_cities(road_map=road_map) == shifted_road_map
