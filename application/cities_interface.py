@@ -160,20 +160,36 @@ def find_best_cycle(*, road_map: RoadMap) -> RoadMap:
 
 def print_map(*, road_map: RoadMap):
     """
-    Prints, in an easily understandable format, the cities and
-    their connections, along with the cost for each connection
-    and the total cost.
+    Prints the cities and their connections from a passed in road map, along with the distance
+    for each connection and the total total distance.
+
+    :param road_map: RoadMap -> [(state, city, latitude, longitude), ...]
     """
-    pass
-
-
-def main():
-    """
-    Reads in, and prints out, the city data, then creates the "best"
-    cycle and prints it out.
-    """
-    pass
-
-
-if __name__ == "__main__":  # keep this in
-    main()
+    total_distance = 0
+    index_a = 0
+    index_b = 1
+    connections = len(road_map)
+    string_to_print = ""
+    while connections:
+        _, city_a, city_a_lat, city_a_long = road_map[index_a]
+        try:
+            _, city_b, city_b_lat, city_b_long = road_map[index_b]
+        except IndexError:
+            #  Wait for the end of the list the
+            _, city_b, city_b_lat, city_b_long = road_map[0]
+        distance = helpers.compute_euclidean_distance(
+            city_a_lat=city_a_lat,
+            city_a_long=city_a_long,
+            city_b_lat=city_b_lat,
+            city_b_long=city_b_long,
+        )
+        total_distance += distance
+        index_a += 1
+        index_b += 1
+        connections -= 1
+        last_connection_string = (
+            f"{index_a}. {city_a} -> {city_b}: Distance {round(distance, 2)}\n"
+        )
+        string_to_print += last_connection_string
+    string_to_print += f"Total distance: {round(total_distance, 2)}"
+    print(string_to_print)
