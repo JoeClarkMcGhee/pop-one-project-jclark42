@@ -57,7 +57,7 @@ def test_compute_total_distance(road_map, result):
     "road_map, index_1, index_2, result",
     [
         pytest.param(
-            test_helpers.initialise_test_road_map(0), 0, 1, test_helpers.swap_city_result(0)
+            test_helpers.initialise_test_road_map(0), 1, 1, test_helpers.swap_city_result(0)
         ),
         pytest.param(
             test_helpers.initialise_test_road_map(1), 1, 2, test_helpers.swap_city_result(1)
@@ -66,10 +66,10 @@ def test_compute_total_distance(road_map, result):
             test_helpers.initialise_test_road_map(2), 2, 0, test_helpers.swap_city_result(2)
         ),
         pytest.param(
-            test_helpers.initialise_test_road_map(3), 0, 1, test_helpers.swap_city_result(3)
+            test_helpers.initialise_test_road_map(3), 2, 1, test_helpers.swap_city_result(3)
         ),
         pytest.param(
-            test_helpers.initialise_test_road_map(4), 0, 2, test_helpers.swap_city_result(4)
+            test_helpers.initialise_test_road_map(4), 1, 3, test_helpers.swap_city_result(4)
         ),
     ],
 )
@@ -82,7 +82,10 @@ def test_swap_cities(road_map, index_1, index_2, result):
     :param index_1: Integer to be used as an index on the road map.
     :param index_2: Integer to be used as an index on the road map.
     """
-    assert cities.swap_cities(road_map=road_map, index_1=index_1, index_2=index_2) == result
+    mock_road_map, mock_distance = result
+    road_map, distance = cities.swap_cities(road_map=road_map, index_1=index_1, index_2=index_2)
+    assert pytest.approx(mock_distance, 0.01) == distance
+    assert mock_road_map == road_map
 
 
 @pytest.mark.parametrize(

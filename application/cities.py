@@ -106,18 +106,25 @@ def compute_total_distance(*, road_map: RoadMap) -> float:
 
 def swap_cities(*, road_map: RoadMap, index_1: int, index_2: int) -> Tuple[RoadMap, float]:
     """
-    Take the city at location `index` in the `road_map`, and the
-    city at location `index2`, swap their positions in the `road_map`,
-    compute the new total distance, and return the tuple
+    Swap the city at index_1 with index_2.
 
-        (new_road_map, new_total_distance)
-
-    Allow for the possibility that `index1=index2`,
-    and handle this case correctly.
+    :param road_map: RoadMap -> [(state, city, latitude, longitude), ...]
+    :param index_1: A int used to index the road_map
+    :param index_2: A int used to index the road_map
     """
-    new_road_map = [("foo", "bar", 1, 2), ("bing", "bong", 3, 4)]
-    new_total_distance = 10
-    return new_road_map, new_total_distance
+    if index_1 == index_2:
+        return road_map, compute_total_distance(road_map=road_map)
+    else:
+        city_a = road_map[index_1]
+        city_b = road_map[index_2]
+
+        for idx, _ in enumerate(road_map):
+            if idx == index_1:
+                road_map[idx] = city_b
+            if idx == index_2:
+                road_map[idx] = city_a
+
+        return road_map, compute_total_distance(road_map=road_map)
 
 
 def shift_cities(*, road_map: RoadMap) -> RoadMap:
