@@ -1,7 +1,7 @@
 import pytest
 import os
 
-from application import cities
+from application import cities_interface
 from application import helpers as app_helpers
 from .. import helpers
 
@@ -20,13 +20,13 @@ def test_is_not_valid_file_line(file_line):
     Tests that a file input line is a valid sting i.e. one that the application is able to parse.
     """
     with pytest.raises(app_helpers.InvalidFileException):
-        app_helpers.parse_file_line(file_line=file_line)
+        app_helpers.parse_file_line(file_line=file_line, line_idx=1)
 
 
 def test_is_valid_file_line():
     file_line = "Alabama	Montgomery	32.361538	-86.279118"
     expected_file_line = ("Alabama", "Montgomery", 32.361538, -86.279118)
-    assert app_helpers.parse_file_line(file_line=file_line) == expected_file_line
+    assert app_helpers.parse_file_line(file_line=file_line, line_idx=1) == expected_file_line
 
 
 def test_not_valid_file_type_fails():
@@ -67,9 +67,26 @@ def test_print_cities(capsys):
     city: Juneau location: {round(58.301935, 2)}, {round(-134.41974, 2)}
     city: Phoenix location: {round(33.448457, 2)}, {round(-112.073844, 2)}
     """
-    cities.print_cities(road_map=road_map)
+    cities_interface.print_cities(road_map=road_map)
     captured = capsys.readouterr()
     assert captured.out == helpers.format_string(expected_string)
+
+
+def test_print_map(capsys):
+    road_map = [
+        ("Alabama", "Montgomery", 32.361538, -86.279118),
+        ("Alaska", "Juneau", 58.301935, -134.41974),
+        ("Arizona", "Phoenix", 33.448457, -112.073844),
+    ]
+    expected_string = f"""
+    1. Montgomery -> Juneau: Distance {round(54.684766, 2)}
+    2. Juneau -> Phoenix: Distance {round(33.422065, 2)}
+    3. Phoenix -> Montgomery: Distance {round(25.817616, 2)}
+    Total distance: {round(113.919, 2)}
+    """
+    cities_interface.print_map(road_map=road_map)
+    captured_out = capsys.readouterr()
+    assert captured_out.out == helpers.format_string(expected_string)
 
 
 @pytest.mark.parametrize(

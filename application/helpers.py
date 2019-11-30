@@ -1,5 +1,6 @@
 import math
 import pathlib
+from random import randrange
 from typing import Tuple
 
 
@@ -12,18 +13,22 @@ class InvalidFileException(Exception):
 Location = Tuple[str, str, float, float]
 
 
-def parse_file_line(*, file_line: str) -> Location:
+def parse_file_line(*, file_line: str, line_idx: int) -> Location:
     try:
         state, city, latitude, longitude = file_line.split()
-    except Exception as e:
-        raise InvalidFileException(f"file line must read state, city, latitude, longitude: {e}")
+    except ValueError as e:
+        raise InvalidFileException(
+            f"file line {line_idx} must read state, city, latitude, longitude: {e}"
+        )
 
     file_line = [state, city]
     try:
         latitude = float(latitude)
         longitude = float(longitude)
     except ValueError:
-        raise InvalidFileException("latitude/longitude can't be parsed to a float")
+        raise InvalidFileException(
+            f"Error at file line {line_idx}. latitude/longitude can't be parsed to a float"
+        )
     else:
         file_line.append(latitude)
         file_line.append(longitude)
@@ -60,3 +65,7 @@ def compute_euclidean_distance(
     *, city_a_lat: float, city_a_long: float, city_b_lat: float, city_b_long: float
 ) -> float:
     return math.sqrt((city_a_lat - city_b_lat) ** 2 + (city_a_long - city_b_long) ** 2)
+
+
+def generate_random_int(*, max_random_number):
+    return randrange(0, max_random_number)

@@ -2,11 +2,12 @@ import pathlib
 from typing import List, Tuple
 
 from . import helpers
+from .best_cycle_data_container import BestCycleContainer as Container
 
 RoadMap = List[Tuple[str, str, float, float]]
 
 
-def read_cities(*, file_name) -> RoadMap:
+def read_cities(*, file_name) -> RoadMap or Exception:
     """
     Read in the cities from the given `file_name`, and return
     them as a list of four-tuples.
@@ -16,17 +17,13 @@ def read_cities(*, file_name) -> RoadMap:
 
     """
     # Test valid file.
-    try:
-        is_valid_file(file_name=file_name)
-    except Exception as e:
-        raise Exception(f"The program received bad file input: {e}")
+    is_valid_file(file_name=file_name)
 
     # Test valid file line and parse lines.
     road_map = build_file_lines(file_name=file_name)
 
-    # A road map needs to have a length of at least 2.
     if len(road_map) < 2:
-        raise helpers.InvalidFileException()
+        raise helpers.InvalidFileException("A road map needs to have a length of at least 2")
 
     return road_map
 
@@ -39,15 +36,10 @@ def build_file_lines(*, file_name) -> RoadMap:
     :returns RoadMap -> [(state, city, latitude, longitude), ...]
     """
     road_map = list()
-    line_idx = None
-    try:
-        path = pathlib.Path(file_name)
-        lines = path.read_text().splitlines()
-        for idx, line in enumerate(lines):
-            line_idx = idx
-            road_map.append(helpers.parse_file_line(file_line=line))
-    except (Exception, helpers.InvalidFileException) as e:
-        raise helpers.InvalidFileException(f"Not able to parse file line {line_idx}: {e}")
+    path = pathlib.Path(file_name)
+    lines = path.read_text().splitlines()
+    for idx, line in enumerate(lines):
+        road_map.append(helpers.parse_file_line(file_line=line, line_idx=idx))
     return road_map
 
 
@@ -141,30 +133,63 @@ def shift_cities(*, road_map: RoadMap) -> RoadMap:
 
 def find_best_cycle(*, road_map: RoadMap) -> RoadMap:
     """
-    Using a combination of `swap_cities` and `shift_cities`,
-    try `10000` swaps/shifts, and each time keep the best cycle found so far.
-    After `10000` swaps/shifts, return the best cycle found so far.
-    Use randomly generated indices for swapping.
+    Using a combination of `swap_cities` and `shift_cities`, find the best cycle and return the
+    corresponding road map.
+    :param road_map: RoadMap -> [(state, city, latitude, longitude), ...]
     """
-    pass
+    road_map = road_map
+    road_map_length = len(road_map)
+    best_cycle = Container()
+    # Set best_cycle with values from the unoptimised road map.
+    best_cycle.set_distance_and_road_map(
+        road_map=best_cycle, distance=compute_total_distance(road_map=road_map)
+    )
+    for idx in range(10000):
+        # Shift the cities every 100 iterations.
+        if idx % 100 == 0:
+            road_map = shift_cities(road_map=road_map)
+        index_1 = helpers.generate_random_int(max_random_number=road_map_length)
+        index_2 = helpers.generate_random_int(max_random_number=road_map_length)
+        swapped_road_map, distance = swap_cities(
+            road_map=road_map, index_1=index_1, index_2=index_2
+        )
+        if best_cycle.should_update_best_distance(distance=distance):
+            best_cycle.set_distance_and_road_map(distance=distance, road_map=swapped_road_map)
+    return best_cycle.best_road_map
 
 
 def print_map(*, road_map: RoadMap):
     """
-    Prints, in an easily understandable format, the cities and
-    their connections, along with the cost for each connection
-    and the total cost.
+    Prints the cities and their connections from a passed in road map, along with the distance
+    for each connection and the total total distance.
+
+    :param road_map: RoadMap -> [(state, city, latitude, longitude), ...]
     """
-    pass
-
-
-def main():
-    """
-    Reads in, and prints out, the city data, then creates the "best"
-    cycle and prints it out.
-    """
-    pass
-
-
-if __name__ == "__main__":  # keep this in
-    main()
+    total_distance = 0
+    index_a = 0
+    index_b = 1
+    connections = len(road_map)
+    string_to_print = ""
+    while connections:
+        _, city_a, city_a_lat, city_a_long = road_map[index_a]
+        try:
+            _, city_b, city_b_lat, city_b_long = road_map[index_b]
+        except IndexError:
+            #  Wait for the end of the list the
+            _, city_b, city_b_lat, city_b_long = road_map[0]
+        distance = helpers.compute_euclidean_distance(
+            city_a_lat=city_a_lat,
+            city_a_long=city_a_long,
+            city_b_lat=city_b_lat,
+            city_b_long=city_b_long,
+        )
+        total_distance += distance
+        index_a += 1
+        index_b += 1
+        connections -= 1
+        last_connection_string = (
+            f"{index_a}. {city_a} -> {city_b}: Distance {round(distance, 2)}\n"
+        )
+        string_to_print += last_connection_string
+    string_to_print += f"Total distance: {round(total_distance, 2)}"
+    print(string_to_print)
