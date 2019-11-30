@@ -20,13 +20,13 @@ def test_is_not_valid_file_line(file_line):
     Tests that a file input line is a valid sting i.e. one that the application is able to parse.
     """
     with pytest.raises(app_helpers.InvalidFileException):
-        app_helpers.parse_file_line(file_line=file_line)
+        app_helpers.parse_file_line(file_line=file_line, line_idx=1)
 
 
 def test_is_valid_file_line():
     file_line = "Alabama	Montgomery	32.361538	-86.279118"
     expected_file_line = ("Alabama", "Montgomery", 32.361538, -86.279118)
-    assert app_helpers.parse_file_line(file_line=file_line) == expected_file_line
+    assert app_helpers.parse_file_line(file_line=file_line, line_idx=1) == expected_file_line
 
 
 def test_not_valid_file_type_fails():

@@ -6,7 +6,7 @@ from . import helpers
 RoadMap = List[Tuple[str, str, float, float]]
 
 
-def read_cities(*, file_name) -> RoadMap:
+def read_cities(*, file_name) -> RoadMap or Exception:
     """
     Read in the cities from the given `file_name`, and return
     them as a list of four-tuples.
@@ -16,17 +16,13 @@ def read_cities(*, file_name) -> RoadMap:
 
     """
     # Test valid file.
-    try:
-        is_valid_file(file_name=file_name)
-    except Exception as e:
-        raise Exception(f"The program received bad file input: {e}")
+    is_valid_file(file_name=file_name)
 
     # Test valid file line and parse lines.
     road_map = build_file_lines(file_name=file_name)
 
-    # A road map needs to have a length of at least 2.
     if len(road_map) < 2:
-        raise helpers.InvalidFileException()
+        raise helpers.InvalidFileException("A road map needs to have a length of at least 2")
 
     return road_map
 
@@ -39,15 +35,10 @@ def build_file_lines(*, file_name) -> RoadMap:
     :returns RoadMap -> [(state, city, latitude, longitude), ...]
     """
     road_map = list()
-    line_idx = None
-    try:
-        path = pathlib.Path(file_name)
-        lines = path.read_text().splitlines()
-        for idx, line in enumerate(lines):
-            line_idx = idx
-            road_map.append(helpers.parse_file_line(file_line=line))
-    except (Exception, helpers.InvalidFileException) as e:
-        raise helpers.InvalidFileException(f"Not able to parse file line {line_idx}: {e}")
+    path = pathlib.Path(file_name)
+    lines = path.read_text().splitlines()
+    for idx, line in enumerate(lines):
+        road_map.append(helpers.parse_file_line(file_line=line, line_idx=idx))
     return road_map
 
 
