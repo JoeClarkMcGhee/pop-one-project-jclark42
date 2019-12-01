@@ -1,3 +1,4 @@
+import copy
 import pathlib
 from typing import List, Tuple
 
@@ -39,6 +40,8 @@ def build_file_lines(*, file_name) -> RoadMap:
     path = pathlib.Path(file_name)
     lines = path.read_text().splitlines()
     for idx, line in enumerate(lines):
+        if line == "":
+            continue
         road_map.append(helpers.parse_file_line(file_line=line, line_idx=idx))
     return road_map
 
@@ -81,7 +84,6 @@ def compute_total_distance(*, road_map: RoadMap) -> float:
         try:
             _, _, city_b_lat, city_b_long = road_map[index_b]
         except IndexError:
-            #  Wait for the end of the list the
             _, _, city_b_lat, city_b_long = road_map[0]
         total_distance += helpers.compute_euclidean_distance(
             city_a_lat=city_a_lat,
@@ -137,24 +139,24 @@ def find_best_cycle(*, road_map: RoadMap) -> RoadMap:
     corresponding road map.
     :param road_map: RoadMap -> [(state, city, latitude, longitude), ...]
     """
-    road_map = road_map
-    road_map_length = len(road_map)
     best_cycle = Container()
     # Set best_cycle with values from the unoptimised road map.
     best_cycle.set_distance_and_road_map(
-        road_map=best_cycle, distance=compute_total_distance(road_map=road_map)
+        road_map=road_map, distance=compute_total_distance(road_map=road_map)
     )
     for idx in range(10000):
-        # Shift the cities every 100 iterations.
-        if idx % 100 == 0:
-            road_map = shift_cities(road_map=road_map)
-        index_1 = helpers.generate_random_int(max_random_number=road_map_length)
-        index_2 = helpers.generate_random_int(max_random_number=road_map_length)
+        copied_map = copy.deepcopy(best_cycle.best_road_map)
+        index_1 = helpers.generate_random_int(max_random_number=len(road_map))
+        index_2 = helpers.generate_random_int(max_random_number=len(road_map))
         swapped_road_map, distance = swap_cities(
-            road_map=road_map, index_1=index_1, index_2=index_2
+            road_map=copied_map, index_1=index_1, index_2=index_2
         )
         if best_cycle.should_update_best_distance(distance=distance):
             best_cycle.set_distance_and_road_map(distance=distance, road_map=swapped_road_map)
+        # Shift the cities every 100 iterations.
+        if idx % 100 == 0:
+            shift_cities(road_map=best_cycle.best_road_map)
+
     return best_cycle.best_road_map
 
 
@@ -175,7 +177,6 @@ def print_map(*, road_map: RoadMap):
         try:
             _, city_b, city_b_lat, city_b_long = road_map[index_b]
         except IndexError:
-            #  Wait for the end of the list the
             _, city_b, city_b_lat, city_b_long = road_map[0]
         distance = helpers.compute_euclidean_distance(
             city_a_lat=city_a_lat,
