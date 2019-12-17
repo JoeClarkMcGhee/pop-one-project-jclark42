@@ -3,7 +3,6 @@ import os
 import pytest
 
 from application import cities_interface
-from application import helpers as app_helpers
 from tests import helpers as test_helpers
 
 DIR = os.path.dirname(os.path.abspath(__file__))
@@ -23,13 +22,18 @@ def test_read_cities_passes():
     assert cities_interface.read_cities(file_name=test_file) == expected_road_map
 
 
-def test_read_cities_fails():
+def test_read_cities_fails(capsys):
     """
     Test read_cities returns InvalidFileException when it reads in a bad file.
     """
     bad_file = os.path.join(DIR, "fixtures/test_bad_city_data.txt")
-    with pytest.raises(app_helpers.InvalidFileException):
-        cities_interface.read_cities(file_name=bad_file)
+    cities_interface.read_cities(file_name=bad_file)
+    expected_string = (
+        "file line 2 must read state, city, latitude, longitude.\nError: not "
+        "enough values to unpack (expected 4, got 3)\n"
+    )
+    captured_out = capsys.readouterr()
+    assert captured_out.out == test_helpers.format_string(expected_string)
 
 
 @pytest.mark.parametrize(

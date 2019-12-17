@@ -8,7 +8,7 @@ from .best_cycle_data_container import BestCycleContainer as Container
 RoadMap = List[Tuple[str, str, float, float]]
 
 
-def read_cities(*, file_name) -> RoadMap or Exception:
+def read_cities(*, file_name) -> RoadMap or None:
     """
     Read in the cities from the given `file_name`, and return
     them as a list of four-tuples.
@@ -18,18 +18,21 @@ def read_cities(*, file_name) -> RoadMap or Exception:
 
     """
     # Test valid file.
-    is_valid_file(file_name=file_name)
+    if not is_valid_file(file_name=file_name):
+        return
 
     # Test valid file line and parse lines.
-    road_map = build_file_lines(file_name=file_name)
-
+    road_map, err = build_file_lines(file_name=file_name)
+    if err:
+        return
     if len(road_map) < 2:
-        raise helpers.InvalidFileException("A road map needs to have a length of at least 2")
+        print("A road map needs to have a length of at least 2")
+        return
 
     return road_map
 
 
-def build_file_lines(*, file_name) -> RoadMap:
+def build_file_lines(*, file_name) -> Tuple[RoadMap, bool]:
     """
     Builds a road map from the passed in file.
 
@@ -39,11 +42,16 @@ def build_file_lines(*, file_name) -> RoadMap:
     road_map = list()
     path = pathlib.Path(file_name)
     lines = path.read_text().splitlines()
+    err = False
     for idx, line in enumerate(lines):
         if line == "":
             continue
-        road_map.append(helpers.parse_file_line(file_line=line, line_idx=idx))
-    return road_map
+        parsed_file_line = helpers.parse_file_line(file_line=line, line_idx=idx)
+        if not parsed_file_line:
+            err = True
+            break
+        road_map.append(parsed_file_line)
+    return road_map, err
 
 
 def is_valid_file(*, file_name):
@@ -53,8 +61,11 @@ def is_valid_file(*, file_name):
         - Is the file a valid extension for this application (.txt)
     :param file_name: File to be validated
     """
-    helpers.is_valid_path_and_file_is_readable(file=file_name)
-    helpers.is_valid_file_type(file=file_name)
+    is_valid_path_and_file = helpers.is_valid_path_and_file_is_readable(file=file_name)
+    is_valid_file_type = helpers.is_valid_file_type(file=file_name)
+
+    if is_valid_path_and_file and is_valid_file_type:
+        return True
 
 
 def print_cities(*, road_map: RoadMap):

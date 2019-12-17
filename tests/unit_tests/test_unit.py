@@ -7,20 +7,44 @@ from .. import helpers
 
 
 @pytest.mark.parametrize(
-    "file_line",
+    "file_line, unpacked_values",
     [
-        pytest.param("1, 2, 3, 4"),
-        pytest.param("Alabama	Montgomery	32.361538	"),
-        pytest.param("Alabama	32.361538	Montgomery	-86.27"),
-        pytest.param("32.361538 Alabama	Montgomery	32.361538"),
+        pytest.param("Alabama	Montgomery	32.361538", 3),
+        pytest.param("Alabama	32.361538"  , 2),
+        pytest.param("32.361538 Montgomery	32.361538", 2),
     ],
 )
-def test_is_not_valid_file_line(file_line):
+def test_is_not_valid_file_line_unable_to_unpack_line(file_line, unpacked_values, capsys):
     """
     Tests that a file input line is a valid sting i.e. one that the application is able to parse.
     """
-    with pytest.raises(app_helpers.InvalidFileException):
-        app_helpers.parse_file_line(file_line=file_line, line_idx=1)
+    expected_string = (
+        f"file line 2 must read state, city, latitude, longitude.\nError: not "
+        f"enough values to unpack (expected 4, got {unpacked_values})\n"
+    )
+    app_helpers.parse_file_line(file_line=file_line, line_idx=1)
+    captured_out = capsys.readouterr()
+    assert captured_out.out == helpers.format_string(expected_string)
+
+
+@pytest.mark.parametrize(
+    "file_line",
+    [
+        pytest.param("Alabama	Montgomery	32.361538	Alabama"),
+        pytest.param("Alabama	32.361538	Montgomery	-86.27"),
+        pytest.param("Alabama	32.361538	Montgomery	Montgomery"),
+    ],
+)
+def test_is_not_valid_file_line_cant_parse_lat_long_to_float(file_line, capsys):
+    """
+    Tests that a file input line is a valid sting i.e. one that the application is able to parse.
+    """
+    expected_string = (
+        "Error at file line 2. latitude/longitude can't be parsed to a float\n"
+    )
+    app_helpers.parse_file_line(file_line=file_line, line_idx=1)
+    captured_out = capsys.readouterr()
+    assert captured_out.out == helpers.format_string(expected_string)
 
 
 def test_is_valid_file_line():
@@ -29,14 +53,18 @@ def test_is_valid_file_line():
     assert app_helpers.parse_file_line(file_line=file_line, line_idx=1) == expected_file_line
 
 
-def test_not_valid_file_type_fails():
+def test_not_valid_file_type_fails(capsys):
     """
-    Test that the application raises an InvalidFileException when it tires to process a file
-    with an extension other than '.csv'
+    Test that the application print an error message when it tires to process a file
+    with an extension other than '.txt'
     """
     test_file = "fixtures/test_bad_extension_city_data.tsv"
-    with pytest.raises(app_helpers.InvalidFileException):
-        app_helpers.is_valid_file_type(file=test_file)
+    expected_string = (
+        f"{test_file} is not a .txt file\n"
+    )
+    app_helpers.is_valid_file_type(file=test_file)
+    captured_out = capsys.readouterr()
+    assert captured_out.out == helpers.format_string(expected_string)
 
 
 def test_valid_file_type_passes():
@@ -44,10 +72,14 @@ def test_valid_file_type_passes():
     assert app_helpers.is_valid_file_type(file=test_file)
 
 
-def test_is_not_valid_path_and_file_is_not_readable():
+def test_is_not_valid_path_and_file_is_not_readable(capsys):
     bad_file_path = "nowhere/this_is_not_a_file.txt"
-    with pytest.raises(Exception):
-        app_helpers.is_valid_path_and_file_is_readable(file=bad_file_path)
+    expected_string = (
+        f"{bad_file_path} does not exist\n"
+    )
+    app_helpers.is_valid_path_and_file_is_readable(file=bad_file_path)
+    captured_out = capsys.readouterr()
+    assert captured_out.out == helpers.format_string(expected_string)
 
 
 def test_is_valid_path_and_file_is_readable():

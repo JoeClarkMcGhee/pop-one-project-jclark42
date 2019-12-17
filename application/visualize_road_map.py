@@ -38,6 +38,18 @@ def draw_arrow(*, plot: Any, x_axis: list, y_axis: list) -> None:
             color="g",
             length_includes_head=True,
         )
+    # Plot arrow back to the start.
+    base_x = len(x_axis) - 1
+    base_y = len(y_axis) - 1
+    plot.arrow(
+        x_axis[base_x],
+        y_axis[base_y],
+        (x_axis[0] - x_axis[base_x]),
+        (y_axis[0] - y_axis[base_y]),
+        head_width=a_scale,
+        color="g",
+        length_includes_head=True,
+    )
 
 
 def add_graph_text(
@@ -47,7 +59,7 @@ def add_graph_text(
     for i, city in enumerate(road_map):
         _, city, _, _ = city
         xy = (x_axis[i], y_axis[i])
-        plot.annotate(city, xy)
+        plot.annotate(i + 1, xy)
         text += f"{i+1}. {city}\n"
     text += f"\nTotal Distance: {round(distance,2)}"
     plot.text(0.02, 0.1, text, fontsize=8, transform=plt.gcf().transFigure)
