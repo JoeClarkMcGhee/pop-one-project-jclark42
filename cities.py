@@ -19,8 +19,11 @@ def main(*, file_name="city-data.txt"):
     file = file_name
     this_dir = os.path.dirname(os.path.abspath(__file__))
     file_path = os.path.join(this_dir, file)
-    print("---- Initial road map ----")
     road_map = cities_interface.read_cities(file_name=file_path)
+    if not road_map:
+        print("Please fix the file errors")
+        return
+    print("---- Initial road map ----")
     cities_interface.print_cities(road_map=road_map)
 
     print("---- Optimised road map ----")
